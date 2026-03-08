@@ -4,7 +4,6 @@ const LogDashboard = () => {
   const [logs, setLogs] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // State untuk Filter
   const [filters, setFilters] = useState({
     limit: 10,
     page: 1,
@@ -156,7 +155,6 @@ const LogDashboard = () => {
               <tbody className="divide-y divide-gray-100">
                 {loading ? (
                   <tr>
-                    {/* Jangan lupa colSpan ditambah 1 karena sekarang ada kolom nomor (total 6) */}
                     <td colSpan="6" className="text-center py-10 text-gray-500">Loading data...</td>
                   </tr>
                 ) : logs.length === 0 ? (
@@ -165,39 +163,35 @@ const LogDashboard = () => {
                   </tr>
                 ) : (
                   logs.map((log, index) => {
-                    // Deklarasi variabel harus di dalam kurung kurawal sebelum return
                     const rowNumber = (filters.page - 1) * filters.limit + (index + 1);
 
                     return (
                       <tr key={log._id} className="hover:bg-gray-50 transition text-sm">
-                        {/* 1. Kolom Nomor */}
+                        
                         <td className="px-4 py-3 text-gray-500 text-center font-medium">
                           {rowNumber}
                         </td>
 
-                        {/* 2. Kolom Timestamp */}
+                        
                         <td className="px-4 py-3 text-gray-500 whitespace-nowrap">
                           {log.timestamp}
                         </td>
 
-                        {/* 3. Kolom Category */}
+                       
                         <td className="px-4 py-3">
                           <span className="bg-blue-50 text-blue-700 px-2 py-1 rounded text-xs font-medium">
                             {log.category}
                           </span>
                         </td>
 
-                        {/* 4. Kolom Level */}
                         <td className="px-4 py-3">
                           <span className={getLevelBadge(log.level)}>{log.level}</span>
                         </td>
 
-                        {/* 5. Kolom Message */}
                         <td className="px-4 py-3 text-gray-700 max-w-md truncate" title={log.message}>
                           {log.message}
                         </td>
 
-                        {/* 6. Kolom Metadata */}
                         <td className="px-4 py-3 text-gray-600 italic">
                           {log.metadata?.provider || log.metadata?.service || "-"}
                         </td>
@@ -215,7 +209,7 @@ const LogDashboard = () => {
           </div>
 
           <div className="flex gap-2">
-            {/* Tombol Previous */}
+            
             <button
               disabled={!pagination.hasPrev}
               onClick={() => setFilters({ ...filters, page: filters.page - 1 })}
@@ -225,7 +219,6 @@ const LogDashboard = () => {
               Previous
             </button>
 
-            {/* Tombol Next */}
             <button
               disabled={!pagination.hasNext}
               onClick={() => setFilters({ ...filters, page: filters.page + 1 })}
