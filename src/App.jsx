@@ -167,17 +167,17 @@ const LogDashboard = () => {
 
                     return (
                       <tr key={log._id} className="hover:bg-gray-50 transition text-sm">
-                        
+
                         <td className="px-4 py-3 text-gray-500 text-center font-medium">
                           {rowNumber}
                         </td>
 
-                        
+
                         <td className="px-4 py-3 text-gray-500 whitespace-nowrap">
                           {log.timestamp}
                         </td>
 
-                       
+
                         <td className="px-4 py-3">
                           <span className="bg-blue-50 text-blue-700 px-2 py-1 rounded text-xs font-medium">
                             {log.category}
@@ -203,32 +203,39 @@ const LogDashboard = () => {
             </table>
           </div>
         </div>
-        <div className="flex items-center justify-between px-4 py-3 bg-white border-t border-gray-200 sm:px-6">
-          <div className="text-sm text-gray-700">
-            Halaman <span className="font-medium">{filters.page}</span> dari <span className="font-medium">{pagination.totalPages}</span>
-          </div>
 
-          <div className="flex gap-2">
-            
-            <button
-              disabled={!pagination.hasPrev}
-              onClick={() => setFilters({ ...filters, page: filters.page - 1 })}
-              className={`px-4 py-2 border rounded-md text-sm font-medium ${!pagination.hasPrev ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'bg-white text-gray-700 hover:bg-gray-50'
-                }`}
-            >
-              Previous
-            </button>
+        {pagination.totalPages > 0 && (
+          <div className="flex items-center justify-between px-4 py-3 bg-white border-t border-gray-200 sm:px-6">
+            <div className="text-sm text-gray-700">
+              Halaman <span className="font-medium">{filters.page}</span> dari <span className="font-medium">{pagination.totalPages}</span>
+            </div>
 
-            <button
-              disabled={!pagination.hasNext}
-              onClick={() => setFilters({ ...filters, page: filters.page + 1 })}
-              className={`px-4 py-2 border rounded-md text-sm font-medium ${!pagination.hasNext ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'bg-white text-gray-700 hover:bg-gray-50'
-                }`}
-            >
-              Next
-            </button>
+            <div className="flex gap-2">
+              <button
+                disabled={!pagination.hasPrev}
+                onClick={() => setFilters({ ...filters, page: filters.page - 1 })}
+                className={`px-4 py-2 border rounded-md text-sm font-medium ${!pagination.hasPrev
+                    ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                    : 'bg-white text-gray-700 hover:bg-gray-50'
+                  }`}
+              >
+                Previous
+              </button>
+
+              <button
+                disabled={!pagination.hasNext}
+                onClick={() => setFilters({ ...filters, page: filters.page + 1 })}
+                className={`px-4 py-2 border rounded-md text-sm font-medium ${!pagination.hasNext
+                    ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                    : 'bg-white text-gray-700 hover:bg-gray-50'
+                  }`}
+              >
+                Next
+              </button>
+            </div>
           </div>
-        </div>
+        )}
+
       </div>
     </div>
   );
