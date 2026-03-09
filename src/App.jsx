@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 
 const LogDashboard = () => {
   const [logs, setLogs] = useState([]);
@@ -18,43 +18,35 @@ const LogDashboard = () => {
     hasPrev: false
   });
 
-  const fetchLogs = async () => {
+  const fetchLogs = useCallback(async () => {
     setLoading(true);
     try {
-      const queryParams = new URLSearchParams({
+      const params = new URLSearchParams({
         limit: filters.limit,
         page: filters.page,
         ...(filters.category && { category: filters.category }),
         ...(filters.level && { level: filters.level }),
+        ...(filters.date && { date: filters.date }),
       });
 
-      if (filters.date) {
-        queryParams.append('date', filters.date);
-      }
-
-      const response = await fetch(`https://bondol-api.trafaline.com/log?${queryParams}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-API-KEY': "12345678910"
-        }
-      });
+      const response = await fetch(`/api/log?${params.toString()}`);
       const result = await response.json();
 
       if (result.status === 'success') {
         setLogs(result.data);
         setPagination({
-          totalPages: result.meta.total_pages,
-          hasNext: result.meta.has_next,
-          hasPrev: result.meta.has_prev
+          totalPages: result.meta?.total_pages || 0,
+          hasNext: result.meta?.has_next || false,
+          hasPrev: result.meta?.has_prev || false
         });
       }
     } catch (error) {
       console.error("Fetch error:", error);
+      setLoading(false);
     } finally {
       setLoading(false);
     }
-  };
+  }, [filters]);
 
   useEffect(() => {
     fetchLogs();
